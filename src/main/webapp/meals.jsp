@@ -6,8 +6,8 @@
     <title>Meals List</title>
     <style>
         table {
-            width: 90%;             /*Ширина таблицы */
-            background: grey;       /*Цвет фона таблицы*/
+            width: 50%;             /*Ширина таблицы */
+            background: green;       /*Цвет фона таблицы*/
             color: black;           /*Цвет текста*/
             border-spacing: 1px;    /*Растоянние между ячейками*/
         }
@@ -37,17 +37,44 @@
             <td align="left">${entry.value.dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy:HH-mm"))}</td>
             <td align="left">${entry.value.description}</td>
             <td align="left">${entry.value.calories}</td>
-            <td><a href="meals?action=edit&Id=<c:out value="${entry.key}"/>">Update</a> </td>
+            <td><a href= value="${entry.key}"/>">Update</a> </td>
             <td><a href="meals?action=delete&Id=<c:out value="${entry.key}"/>">Delete</a> </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<form name = "form1" action="edit" method="post">
-    <input type="datetime-local">
+<br>
+<h2>Редактирование данных</h2>
+<form name = "form1" action="${pageContext.request.contextPath}/meals" method="post">
+    <input type="hidden" name="id" value="">
+    <input type="datetime-local" value="">
     <input type="text">
     <input type="text">
+    <input type="submit" name="edit" value="Сохранить">
 </form>
+
+<h2>Добавить данные</h2>
+<table>
+<thead>
+<tr>
+    <th>Введите дату,время</th>
+    <th>Введите описание</th>
+    <th>Введите калории</th>
+    <th></th>
+</tr>
+</thead>
+    <tbody>
+    <tr style="background-color: aliceblue">
+        <form name="form2"  method="post">
+        <td><input type="datetime-local" name="dateTime" value="" size="100%"></td>
+        <td><input type="text" name="description" value=""></td>
+        <td><input type="text" name="calories" value=""></td>
+        <td><input type="submit" name="insert" value="Add"></td>
+    </form>
+    </tr>
+    </tbody>
+</table>
+
 <p><a href="meals?action=insert">Добавить запись</a></p>
 </body>
 </html>

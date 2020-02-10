@@ -32,21 +32,18 @@ public class MealServlet extends HttpServlet {
         if (action.equalsIgnoreCase("delete")){
             int id  = Integer.parseInt(request.getParameter("Id"));
             mealRepositoryInMemory.deleteById(id);
+            response.sendRedirect("meals");
 
-           request.setAttribute("resultList", mealRepositoryInMemory.getList());
-
-
-        }else if (action.equalsIgnoreCase("update")){
+        }else
+            if (action.equalsIgnoreCase("update")){
             int id = Integer.parseInt(request.getParameter("Id"));
         }
-        else
+        else if (action.equalsIgnoreCase("listMeal"))
         {
             request.setAttribute("resultList", mealRepositoryInMemory.getList());
+            request.getRequestDispatcher("/meals.jsp").forward(request,response);
         }
-//        request.getRequestDispatcher("/users.jsp").forward(request, response);
-       // response.sendRedirect("/meals");
-        request.getRequestDispatcher("/meals.jsp").forward(request,response);
-//
+
     }
 
 
