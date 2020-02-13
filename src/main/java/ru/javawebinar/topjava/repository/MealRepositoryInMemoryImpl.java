@@ -34,7 +34,8 @@ public class MealRepositoryInMemoryImpl implements MealRepositoryInMemory {
 
     @Override
     public Meal save(Meal meal) {
-        return null;
+        int id = idMeal.incrementAndGet();
+        return mealMap.put(id,new Meal(meal.getId(),meal.getDateTime(),meal.getDescription(),meal.getCalories()));
     }
 
     @Override

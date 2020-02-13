@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="dd.MM.yyyy" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page import="java.time.format.DateTimeFormatter" %>
 <html>
 <head>
@@ -37,7 +38,7 @@
             <td align="left">${entry.value.dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy:HH-mm"))}</td>
             <td align="left">${entry.value.description}</td>
             <td align="left">${entry.value.calories}</td>
-            <td><a href= value="${entry.key}"/>">Update</a> </td>
+            <td><a href="meals?action=edit&Id=<c:out value="${entry.key}"/>">Update</a> </td>
             <td><a href="meals?action=delete&Id=<c:out value="${entry.key}"/>">Delete</a> </td>
         </tr>
     </c:forEach>
@@ -46,10 +47,9 @@
 <br>
 <h2>Редактирование данных</h2>
 <form name = "form1" action="${pageContext.request.contextPath}/meals" method="post">
-    <input type="hidden" name="id" value="">
-    <input type="datetime-local" value="">
-    <input type="text">
-    <input type="text">
+    <input type="datetime-local" value="<c:out value="${resultList.value.dateTime}"/> ">
+    <input type="text" value="<c:out value="${resultList.value.description}"/> ">
+    <input type="text" value="<c:out value="${resultList.value.calories}" />">
     <input type="submit" name="edit" value="Сохранить">
 </form>
 
