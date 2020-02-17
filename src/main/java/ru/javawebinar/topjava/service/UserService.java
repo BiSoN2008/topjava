@@ -1,10 +1,13 @@
 package ru.javawebinar.topjava.service;
 
 import org.springframework.stereotype.Service;
+import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.UserRepository;
 
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFound;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNotFoundWithId;
@@ -41,4 +44,5 @@ public class UserService {
     public void update(User user) {
         checkNotFoundWithId(repository.save(user), user.getId());
     }
+
 }

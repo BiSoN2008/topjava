@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.inmemory.InMemoryMealRepository;
+import ru.javawebinar.topjava.to.MealTo;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import javax.servlet.ServletConfig;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -36,7 +38,8 @@ public class MealServlet extends HttpServlet {
         Meal meal = new Meal(id.isEmpty() ? null : Integer.valueOf(id),
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
-                Integer.parseInt(request.getParameter("calories")));
+                Integer.parseInt(request.getParameter("calories")),
+                SecurityUtil.authUserId());
 
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
         repository.save(meal);
@@ -57,7 +60,7 @@ public class MealServlet extends HttpServlet {
             case "create":
             case "update":
                 final Meal meal = "create".equals(action) ?
-                        new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
+                        new Meal(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000,SecurityUtil.authUserId()) :
                         repository.get(getId(request));
                 request.setAttribute("meal", meal);
                 request.getRequestDispatcher("/mealForm.jsp").forward(request, response);
@@ -66,7 +69,7 @@ public class MealServlet extends HttpServlet {
             default:
                 log.info("getAll");
                 request.setAttribute("meals",
-                        MealsUtil.getTos(repository.getAll(), MealsUtil.DEFAULT_CALORIES_PER_DAY));
+                        MealsUtil.getTos(repository.getAll(), SecurityUtil.authUserCaloriesPerDay()));
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
                 break;
         }
@@ -76,4 +79,6 @@ public class MealServlet extends HttpServlet {
         String paramId = Objects.requireNonNull(request.getParameter("id"));
         return Integer.parseInt(paramId);
     }
+
+
 }
